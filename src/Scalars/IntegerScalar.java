@@ -15,6 +15,7 @@ public class IntegerScalar extends Scalar {
     public Scalar mul(Scalar s) {
         return null;
     }
+    hhh
 
     @Override
     public Scalar neg() {
