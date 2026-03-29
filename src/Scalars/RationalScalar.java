@@ -46,17 +46,37 @@ public class RationalScalar extends Scalar{
 
     @Override
     public int sign() {
-        return 0;
+        if (getNumerator() == 0) {
+            return 0;
+        }
+        return getNumerator() / Math.abs(getNumerator());
     }
 
     @Override
     public boolean equals(Object o) {
-        return false;
+        if (! (o instanceof Scalar)){
+            return false;
+        }
+        Scalar other = (Scalar) o;
+       if (o instanceof RationalScalar) {
+           other = ((RationalScalar) o).reduce();
+       }
+       Scalar myReduced = reduce();
+       if (other.getNumerator() == myReduced.getNumerator() && other.getDenominator() == myReduced.getDenominator()) {
+           return true;
+       }
+       return false;
     }
 
     @Override
     public String toString() {
-        return "";
+        Scalar myReduced = reduce();
+        int num = myReduced.getNumerator();
+        int dem = myReduced.getDenominator();
+        if (dem == 1){
+            return num + "";
+        }
+        return num + "/" + dem;
     }
 
     public Scalar reduce(){
