@@ -8,8 +8,8 @@ public abstract class Scalar {
     public abstract int sign();
     public abstract boolean equals(Object o);
     public abstract String toString();
-
-    protected abstract Scalar addInteger(IntegerScalar s);
+    public abstract int getNumerator();
+    public abstract int getDenominator();
 
 
 }
