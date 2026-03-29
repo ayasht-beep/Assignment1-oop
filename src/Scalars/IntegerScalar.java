@@ -30,26 +30,30 @@ public class IntegerScalar extends Scalar {
 
     @Override
     public Scalar neg() {
-        return null;
-    }
-
-    @Override
-    public Scalar power(int exponent) {
-        return null;
+        return new IntegerScalar(-this.number);
     }
 
     @Override
     public int sign() {
+        if (this.number > 0){
+            return 1;
+        }
+        if (this.number < 0){
+            return -1;
+        }
         return 0;
     }
 
     @Override
     public boolean equals(Object o) {
+        if (o instanceof IntegerScalar){
+            return this.number == ((IntegerScalar) o).number;
+        }
         return false;
     }
 
     @Override
     public String toString() {
-        return "";
+        return String.valueOf(this.number);
     }
 }
