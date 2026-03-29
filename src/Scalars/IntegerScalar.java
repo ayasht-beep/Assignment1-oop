@@ -19,13 +19,13 @@ public class IntegerScalar extends Scalar {
 
     @Override
     public Scalar add(Scalar s) {
-        return new RationalScalars((this.number *  s.getDenominator()) + s.getNumerator(),
+        return new RationalScalar((this.number *  s.getDenominator()) + s.getNumerator(),
                 s.getDenominator()).reduce();
     }
 
     @Override
     public Scalar mul(Scalar s) {
-        return  new RationalScalars(this.number * s.getNumerator(), s.getDenominator()).reduce();
+        return  new RationalScalar(this.number * s.getNumerator(), s.getDenominator()).reduce();
     }
 
     @Override
