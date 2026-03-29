@@ -6,16 +6,37 @@ public class IntegerScalar extends Scalar {
     public IntegerScalar(int number){
         this.number = number;
     }
+
+    @Override
+    public int getNumerator() {
+        return this.number;
+    }
+
+    @Override
+    public int getDenominator() {
+        return 1;
+    }
+
     @Override
     public Scalar add(Scalar s) {
-        return s.addInteger(this);
+        int thisNumerator = this.number;
+
+        int sNumerator = s.getNumerator();
+        int sDenominator = s.getDenominator();
+
+        int newNumerator = thisNumerator + (sNumerator * sNumerator);
+
+        RationalScalars result = new RationalScalars(newNumerator, sDenominator);
+        return result.reduce();
     }
 
     @Override
     public Scalar mul(Scalar s) {
-        return null;
+        int newNumerator = (this.number * s.getNumerator());
+        int newDenominator = s.getDenominator();
+
+        return  new RationalScalars(newNumerator, newDenominator).reduce();
     }
-    hhh
 
     @Override
     public Scalar neg() {
