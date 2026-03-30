@@ -8,10 +8,21 @@ import java.util.ArrayList;
 public class Polynomial {
     private Collection <Monomial> monomials;
 
-    public Polynomial(){
-        this.monomials = new ArrayList<>();
+    public Polynomial(String s){
+        this.monomials = new ArrayList<Monomial>();
+
     }
-    public Polynomial add (Polynomial p){return null;}
+
+    public Collection <Monomial> getMonomials(){
+        return monomials;
+    }
+
+    public static Polynomial build(String s){
+            
+    }
+    public Polynomial add (Polynomial p){
+
+    }
 
     public Polynomial mul (Polynomial p){return null;}
 
