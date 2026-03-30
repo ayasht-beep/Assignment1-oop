@@ -44,11 +44,11 @@ public class Monomial {
         return new Monomial(getExponent() - 1, getCoefficient().mul(new IntegerScalar(getExponent())));
     }
 
-
     public int sign(){
         return this.coefficient.sign();
     }
 
+    @Override
     public boolean equals(Object o){
         if (! (o instanceof Monomial)) {
             return false;
@@ -57,6 +57,7 @@ public class Monomial {
         return getCoefficient().equals(other.getCoefficient()) && getExponent() == other.getExponent();
     }
 
+    @Override
     public String toString(){
         String coefficientStr = this.coefficient.toString();
         if(this.exponent == 0){
@@ -79,6 +80,4 @@ public class Monomial {
             return result + "x^" + this.exponent;
         }
     }
-
-
 }
