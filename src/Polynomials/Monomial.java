@@ -1,3 +1,5 @@
+package Polynomials;
+
 import Scalars.Scalar;
 
 public class Monomial {
@@ -31,6 +33,7 @@ public class Monomial {
     }
 
     public boolean equals(Object o){return false;}
+
     public String toString(){
         String coefficientStr = this.coefficient.toString();
         if(this.exponent == 0){
