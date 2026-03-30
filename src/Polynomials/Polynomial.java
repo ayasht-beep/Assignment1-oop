@@ -133,12 +133,17 @@ public class Polynomial {
         for (int i = 0; size > 0; i++) {
             Monomial mon = getExp(i);
             if (mon != null) {
-                if (!output.isEmpty() && mon.sign() > 0) {
-                    output = output + "+";
+                if (mon.sign() != 0) {
+                    if (!output.isEmpty() && mon.sign() > 0) {
+                        output = output + "+";
+                    }
+                    output = output + mon.toString();
                 }
-                output = output + mon.toString();
                 size--;
             }
+        }
+        if (output.isEmpty()) {
+            return "0";
         }
         return output;
     }
