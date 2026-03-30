@@ -12,10 +12,26 @@ public class Polynomial {
         this.monomials = new ArrayList<>();
     }
     public Polynomial add (Polynomial p){return null;}
+
     public Polynomial mul (Polynomial p){return null;}
+
     public Scalar evulate(Scalar s){return null;}
-    public Polynomial derivate (){return null;}
+
+    public Polynomial derivate (){
+        Polynomial result = new Polynomial();
+
+        for (Monomial m : this.monomials){
+            Monomial derivedMonomial = m.derivative();
+
+            if (derivedMonomial.getCoefficient().sign() != 0){
+                result.monomials.add(m);
+            }
+        }
+        return result;
+    }
+
     public boolean equals (Object o){return false;}
+
     public String toString(){return null;}
 
 }
