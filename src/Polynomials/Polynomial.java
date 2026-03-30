@@ -80,6 +80,22 @@ public class Polynomial {
 
     public boolean equals (Object o){return false;}
 
-    public String toString(){return null;}
-
+    public String toString() {
+        if (monomials.isEmpty()) {
+            return "0";
+        }
+        int size = monomials.size();
+        String output = "";
+        for (int i = 0; size > 0; i++) {
+            Monomial mon = getExp(i);
+            if (mon != null) {
+                if (!output.isEmpty() && mon.sign() > 0) {
+                    output = output + "+";
+                }
+                output = output + mon.toString();
+                size--;
+            }
+        }
+        return output;
+    }
 }
