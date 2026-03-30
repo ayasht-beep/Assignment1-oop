@@ -32,13 +32,38 @@ public class Polynomial {
             }
             return output;
     }
-    public Polynomial add (Polynomial p){
-
+    public Polynomial add (Polynomial p) {
+        Polynomial output = new Polynomial();
+        output.monomials.addAll(monomials);
+        for (Monomial mon : p.monomials) {
+            Monomial myMon = getExp(mon.getExponent());
+            if ( myMon != null) {
+                output.monomials.add(mon.add(myMon));
+                output.monomials.remove(myMon);
+            }
+            else {
+                output.monomials.add(mon);
+            }
+        }
+        return output;
     }
-
+    private Monomial getExp(int exp) {
+        for (Monomial mon : this.monomials) {
+            if (mon.getExponent() == exp) {
+                return mon;
+            }
+        }
+        return null;
+    }
     public Polynomial mul (Polynomial p){return null;}
 
-    public Scalar evaluate(Scalar s){return null;}
+    public Scalar evaluate(Scalar s){
+        Scalar output = new IntegerScalar(0);
+        for(Monomial mon : this.monomials) {
+            output = output.add(mon.evaluate(s));
+        }
+        return output;
+    }
 
     public Polynomial derivative (){
         Polynomial result = new Polynomial();
