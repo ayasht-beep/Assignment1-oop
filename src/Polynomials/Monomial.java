@@ -60,6 +60,9 @@ public class Monomial {
     @Override
     public String toString(){
         String coefficientStr = this.coefficient.toString();
+        if (this.coefficient.sign() == 0) {
+            return "0";
+        }
         if(this.exponent == 0){
             return coefficientStr;
         }
