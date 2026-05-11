@@ -4,40 +4,90 @@ public class RationalScalar extends Scalar{
     private int numerator;
     private int denominator;
 
-    public RationalScalar(int num, int den){
-        if (den < 0){
-            this.numerator = -num;
-            this.denominator = -den;
+    public RationalScalar(int numerator, int denominator) {
+        if (denominator < 0){
+            this.numerator = -numerator;
+            this.denominator = -denominator;
         }
         else{
-            this.numerator = num;
-            this.denominator = den;
+            this.numerator = numerator;
+            this.denominator = denominator;
         }
     }
 
     public int getDenominator() {
-        return denominator;
+        return this.denominator;
     }
 
     public int getNumerator() {
-        return numerator;
+        return this.numerator;
+    }
+
+    public RationalScalar reduce(){
+        int gcd = gcd(Math.abs(getNumerator()),Math.abs(getDenominator()));
+        int newNum = getNumerator() / gcd;
+        int newDem = getDenominator() / gcd;
+
+        if (newDem < 0) {
+            newDem = -newDem;
+            newNum = -newNum;
+        }
+        return new RationalScalar(newNum, newDem);
+    }
+
+    private int gcd(int a, int b){
+        if (b == 0){
+            return a;
+        }
+        return gcd(b, a%b);
+    }
+
+
+    @Override
+    public Scalar add(Scalar s) { return s.addRational(this); }
+
+    @Override
+    public Scalar mul(Scalar s) { return s.mulRational(this); }
+
+
+    @Override
+    public Scalar addInteger(IntegerScalar s){
+        int newNumerator = this.numerator + (s.getNumber() * this.denominator);
+        return new RationalScalar(newNumerator, this.denominator).reduce();
     }
 
     @Override
-    public Scalar add(Scalar s) {
-        int otherDem = s.getDenominator();
-        int otherNum = s.getNumerator();
-        int newNum = this.getNumerator() * otherDem + otherNum * this.getDenominator();
-        int newDem = this.getDenominator() * otherDem;
-        return new RationalScalar(newNum, newDem).reduce();
+    public Scalar addRational(RationalScalar s){
+        int newNumerator = (this.numerator * s.getDenominator()) + (s.getNumerator() * this.denominator);
+        int newDenominator = this.denominator * s.getDenominator();
+        return new RationalScalar(newNumerator, newDenominator).reduce();
     }
 
     @Override
-    public Scalar mul(Scalar s) {
-        int newNum = s.getNumerator() * getNumerator();
-        int newDem = s.getDenominator() * getDenominator();
-        return new RationalScalar(newNum, newDem).reduce();
+    public Scalar addReal (RealScalar s){
+        double thisRealValue = (double) this.numerator / this.denominator;
+        return new RealScalar(thisRealValue + s.getRealValue());
     }
+
+
+    @Override
+    public Scalar mulInteger(IntegerScalar s){
+        return new RationalScalar(this.numerator * s.getNumber(), this.denominator);
+    }
+
+    @Override
+    public Scalar mulRational(RationalScalar s) {
+        // כפל רציונלי עם רציונלי: מונה כפול מונה, מכנה כפול מכנה
+        return new RationalScalar(this.numerator * s.getNumerator(), this.denominator * s.getDenominator()).reduce();
+    }
+
+    @Override
+    public Scalar mulReal(RealScalar s) {
+        // כפל רציונלי עם ממשי: התוצאה היא ממשית
+        double thisRealValue = (double) this.numerator / this.denominator;
+        return new RealScalar(thisRealValue * s.getRealValue());
+    }
+
 
     @Override
     public Scalar neg() {
@@ -54,50 +104,35 @@ public class RationalScalar extends Scalar{
 
     @Override
     public boolean equals(Object o) {
-        if (! (o instanceof Scalar)){
-            return false;
+        if (o instanceof Scalar) {
+            return ((Scalar) o).isEqualToRational(this);
         }
-        Scalar other = (Scalar) o;
-       if (o instanceof RationalScalar) {
-           other = ((RationalScalar) o).reduce();
-       }
-       Scalar myReduced = reduce();
-       if (other.getNumerator() == myReduced.getNumerator() && other.getDenominator() == myReduced.getDenominator()) {
-           return true;
-       }
-       return false;
+        return false;
+    }
+    @Override
+    public boolean isEqualToInteger (IntegerScalar s){
+        RationalScalar reduced = this.reduce();
+        return reduced.denominator == 1 && reduced.numerator == s.getNumber();
     }
 
     @Override
+    public boolean isEqualToRational (RationalScalar s){
+        return (long)this.denominator * s.getDenominator() == (long)s.getNumerator() * this.numerator;
+    }
+
+    @Override
+    public boolean isEqualToReal(RealScalar s) {
+        return Double.compare((double)numerator / denominator, s.getRealValue()) == 0;
+    }
+
+
+    @Override
     public String toString() {
-        Scalar myReduced = reduce();
-        int num = myReduced.getNumerator();
-        int dem = myReduced.getDenominator();
-        if (dem == 1){
-            return num + "";
+        RationalScalar r = this.reduce();
+        if (r.denominator == 1) {
+            return String.valueOf(r.numerator);
         }
-        return num + "/" + dem;
-    }
-
-    public Scalar reduce(){
-        int gcd = gcd(Math.abs(getNumerator()),Math.abs(getDenominator()));
-        int newNum = getNumerator() / gcd;
-        int newDem = getDenominator() / gcd;
-        if (newDem < 0) {
-            newDem = -newDem;
-            newNum = - newNum;
-        }
-        if (newDem == 1){
-            return new IntegerScalar(newNum);
-        }
-        return new RationalScalar(newNum, newDem);
-    }
-
-    private int gcd(int a, int b){
-     if (b == 0){
-         return a;
-     }
-     return gcd(b, a%b);
+        return r.numerator + "/" + r.denominator;
     }
 
 }
